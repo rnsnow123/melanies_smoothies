@@ -33,18 +33,22 @@ ingredients_list = st.multiselect(
 )
 
 if ingredients_list:
-    ingredients_string =''
+    ingredients_string = ''
     name_on_order = title
     
     for fruit_chosen in ingredients_list:
         ingredients_string += fruit_chosen + ' '
         
-        search_on=pd_df.loc[pd_df['FRUIT_NAME'] == fruit_chosen, 'SEARCH_ON'].iloc[0]
-        #st.write('The search value for ', fruit_chosen,' is ', search_on, '.')
+        search_on = pd_df.loc[pd_df['FRUIT_NAME'] == fruit_chosen, 'SEARCH_ON'].iloc[0]
         
-        st.subheader(fruit_chosen + ' Nutrition Information ')
+        st.subheader(fruit_chosen + ' Nutrition Information')
+        
         fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + search_on)
-        fv_df = st.dataframe(data=fruityvice_response.json(), use_container_width=True)
+        
+        if fruityvice_response.status_code == 200:
+            fv_df = st.dataframe(data=fruityvice_response.json(), use_container_width=True)
+        else:
+            st.error(f"Failed to retrieve data for {fruit_chosen}. Status code: {fruityvice_response.status_code}")
 
     #st.write(ingredients_string)
 
