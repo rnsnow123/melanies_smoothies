@@ -1,6 +1,7 @@
 # Import python packages
 import streamlit as st
 from snowflake.snowpark.functions import col
+import requests
 
 
 # Write directly to the app
@@ -25,8 +26,6 @@ ingredients_list = st.multiselect(
 )
 
 if ingredients_list:
-    
-
     ingredients_string =''
     name_on_order = title
     
@@ -49,4 +48,3 @@ if ingredients_list:
         
        st.success('Your Smoothie is ordered ' + name_on_order + '!',icon="✅")
         
-import requests
